@@ -1,7 +1,10 @@
+'use strict';
 const express = require('express');
 const app = express();
 const request = require('request');
+const config = require('config');
 
+app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 
@@ -14,7 +17,7 @@ app.get('/', function (req, res) {
 
 app.post('/', function (req, res) {
   
-  let apiKey = 'e60211ce69122461e9a29d5dcd8c6bc3';
+  let apiKey = config.openWeather.apiKey;
   // const argv = require('yargs').argv;
   let city = req.body.city;
   let url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
@@ -29,7 +32,7 @@ app.post('/', function (req, res) {
         res.render('index', {weather: null, error: 'Error, please try again'});
       } else {
         // let weatherText = `It's ${weather.main.temp} degrees in ${weather.name}! with Humidity ${weather.main.humidity}%`;
-        res.render('custom', {weather: weather, condition: weather.weather.main});
+        res.render('custom', {weather: weather, condition: weather.weather[0].main});
       }
     }
   });
@@ -37,5 +40,5 @@ app.post('/', function (req, res) {
 })
 
 app.listen(3000, function () {
-  console.log('Example app listening on port 3000!');
+  console.log('Search for weather on port 3000!');
 })
