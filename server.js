@@ -39,6 +39,6 @@ app.post('/', function (req, res) {
     console.log(req.body.city);
 })
 
-app.listen(3000, function () {
+app.listen(process.env.PORT || 3000, function () {
   console.log('Search for weather on port 3000!');
 })
